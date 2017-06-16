@@ -9,5 +9,6 @@
     <Import_RootNamespace>Framework</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BasePage.cs" />
   </ItemGroup>
 </Project>
