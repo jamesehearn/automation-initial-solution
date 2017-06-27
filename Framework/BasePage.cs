@@ -1,12 +1,16 @@
 ﻿
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
+using System.Collections.Generic;
+using UI_Tests;
+
 namespace Framework
 {
     internal abstract class BasePage
     {
         protected readonly IWebDriver Driver;
         //Locators to find elements on the page
-        private readonly By CaseStatusText       = By.Id("Body_ctlRegistrationHeader_lblStatus");
-
         protected BasePage(IWebDriver driver)
         {
             Driver = driver;
@@ -16,7 +20,7 @@ namespace Framework
             if (url.StartsWith("http"))
                 Driver.Navigate().GoToUrl(url);
             else
-                Driver.Navigate().GoToUrl(BaseTest.ApplicationBaseUrl + url);
+                Driver.Navigate().GoToUrl(BaseTest.BaseUrl + url);
         }
         private IWebElement Find(By locator) => Driver.FindElement(locator);
         protected void Click(By locator)
@@ -76,12 +80,6 @@ namespace Framework
         {
             if (IsDisplayed(locator))
                 new SelectElement(Find(locator)).SelectByText(inputText);
-        }
-        protected void SelectComboBox(By locator, string inputText)
-        {
-            Find(locator).SendKeys(inputText);
-            Thread.Sleep(1000);
-            Click(ComboBoxSelection);
         }
         protected void Check(By locator, string check)
         {
