@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using Framework;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
-//using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Remote;
 using UI_Tests.Properties;
+using Framework;
 
 namespace UI_Tests
 {
@@ -16,7 +16,7 @@ namespace UI_Tests
     [TestFixture]
     internal abstract class BaseTest
     {
-        //protected Library Lib;
+        protected Library Lib;
         protected IWebDriver Driver;
         public string[] Table;
         private string TestClass;
@@ -24,13 +24,13 @@ namespace UI_Tests
         private string PDFDirectory;
         private string DownloadDirectory;
         private static string Host;
-        //private ScreenShot ScreenShot;
+        private ScreenShot ScreenShot;
         private static string Platform;
         private static string BrowserName;
         private static string BaseDirectory;
         private static string BrowserVersion;
         private static string VendorDirectory;
-        private static string ScreenshotDirectory;
+        private string ScreenshotDirectory;
         protected internal static string Environment;
         protected internal static string BaseUrl;
 
@@ -76,7 +76,7 @@ namespace UI_Tests
             var fullName = TestContext.CurrentContext.Test.FullName;
 
             Debug.WriteLine(fullName);
-            var screenShotName = ScreenshotDirectory + Table[0] + " " + testName + " " + DateTime.Now.ToString("MMMM dd") + " " + status + ".png";
+            var screenShotName = ScreenshotDirectory + " " + testName + " " + DateTime.Now.ToString("MMMM dd") + " " + status + ".png";
 
             Driver.Quit();
         }
@@ -98,22 +98,22 @@ namespace UI_Tests
             Directory.SetCurrentDirectory(BaseDirectory);
         }
 
-        //private void CreateLibrary(string testClass)
-        //{
-        //    Lib = new Library();
+        private void CreateLibrary(string testClass)
+        {
+            Lib = new Library();
 
-        //    Table = new Library().GetTable(testClass);
+            Table = new Library().GetTable(testClass);
 
-        //    DataSheet = "../../Data/" + Table[0] + "_" + Environment + ".xlsx";
+            DataSheet = "../../Data/" + Table[0] + "_" + Environment + ".xlsx";
 
-        //    PDFDirectory = DownloadDirectory + Table[0] + "\\" + Table[1] + "\\";
+            PDFDirectory = DownloadDirectory + Table[0] + "\\" + Table[1] + "\\";
 
-        //    //Open/Save Excel file to update date formulas
-        //    Lib.OpenAndSave(DataSheet);
+            //Open/Save Excel file to update date formulas
+            Lib.OpenAndSave(DataSheet);
 
-        //    //Add data to the datatable
-        //    Lib.PopulateInCollection(DataSheet, Table[1]);
-        //}
+            //Add data to the datatable
+            Lib.PopulateInCollection(DataSheet, Table[1]);
+        }
 
         protected void Rename(string oldName, string newName)
         {

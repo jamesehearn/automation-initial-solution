@@ -10,5 +10,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BasePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Navigation\IMastHead.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\HomePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\MyAccountPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ExcelLibrary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ScreenShot.cs" />
   </ItemGroup>
 </Project>

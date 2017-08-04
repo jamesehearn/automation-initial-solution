@@ -1,4 +1,4 @@
-﻿
+﻿using Framework.Navigation;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -7,10 +7,19 @@ using UI_Tests;
 
 namespace Framework
 {
-    internal abstract class BasePage
+    internal abstract class BasePage : IMastHead
     {
         protected readonly IWebDriver Driver;
         //Locators to find elements on the page
+        private readonly By BasePageLink  = By.LinkText("Automation");
+        private readonly By SearchText    = By.Id("woocommerce-product-search-field-0");
+        private readonly By HomeLink      = By.LinkText("Home");
+        private readonly By CartLink      = By.LinkText("Cart");
+        private readonly By CheckoutLink  = By.LinkText("Checkout");
+        private readonly By MyAccountLink = By.LinkText("My account");
+        private readonly By ViewCartLink  = By.Id("site-header-cart");
+        private readonly By SearchButton  = By.CssSelector("[@value='Search']");
+
         protected BasePage(IWebDriver driver)
         {
             Driver = driver;
@@ -29,7 +38,7 @@ namespace Framework
         }
         protected void EnabledClick(By locator)
         {
-            if(IsEnabled(locator))
+            if (IsEnabled(locator))
                 Find(locator).Click();
         }
         protected void Type(By locator, string inputText)
@@ -84,7 +93,7 @@ namespace Framework
         protected void Check(By locator, string check)
         {
             if (!string.IsNullOrEmpty(check))
-               Find(locator).Click();
+                Find(locator).Click();
         }
         protected void EnabledCheck(By locator, string check)
         {
@@ -119,7 +128,8 @@ namespace Framework
             try
             {
                 return Find(locator).Displayed;
-            } catch (NoSuchElementException)
+            }
+            catch (NoSuchElementException)
             {
                 return false;
             }
@@ -131,7 +141,8 @@ namespace Framework
                 var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(maxWaitTime));
                 wait.Until(ExpectedConditions.ElementIsVisible(locator));
                 return true;
-            } catch (WebDriverTimeoutException)
+            }
+            catch (WebDriverTimeoutException)
             {
                 return false;
             }
@@ -143,7 +154,8 @@ namespace Framework
                 var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(maxWaitTime));
                 wait.Until(ExpectedConditions.TextToBePresentInElementValue(locator, text));
                 return true;
-            } catch (WebDriverTimeoutException)
+            }
+            catch (WebDriverTimeoutException)
             {
                 return false;
             }
@@ -153,7 +165,8 @@ namespace Framework
             try
             {
                 return Find(locator).Enabled;
-            } catch (InvalidElementStateException)
+            }
+            catch (InvalidElementStateException)
             {
                 return false;
             }
@@ -173,7 +186,37 @@ namespace Framework
             try
             {
                 Driver.SwitchTo().Alert().Accept();
-            } catch (NoAlertPresentException e) { }
+            }
+            catch (NoAlertPresentException e) { }
         }
+        public void GoToBasePage()
+        {
+            Click(BasePageLink);
+        }
+        public void Search()
+        {
+            Click(SearchText);
+        }
+        public void Home()
+        {
+            Click(HomeLink);
+        }
+        public void Cart()
+        {
+            Click(CartLink);
+        }
+        public void Checkout()
+        {
+            Click(CheckoutLink);
+        }
+        public void MyAccount()
+        {
+            Click(MyAccountLink);
+        }
+        public void ViewCart()
+        {
+            Click(ViewCartLink);
+        }
+
     }
 }
