@@ -9,7 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI Tests", "UI Tests\UI Tes
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Framework\Framework.projitems*{5979ae7e-7f9c-4c76-ab2c-84bd2b9099df}*SharedItemsImports = 4
 		Framework\Framework.projitems*{650eba62-4ca3-4bfc-95da-6e7920a928a3}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
