@@ -10,6 +10,7 @@ namespace UI_Tests.Smoke
     {
         private DataObject Data;
         private HomePage Home;
+        private CartPage Cart;
         private MyAccountPage MyAccount;
         //private LoginWorkflow LoginWorkflow;
         //private BirthSearchPage BirthSearch;
@@ -25,6 +26,7 @@ namespace UI_Tests.Smoke
             Data = new DataObject();
             Home = new HomePage(Driver);
             MyAccount = new MyAccountPage(Driver);
+            Cart = new CartPage(Driver);
             //LoginWorkflow = new LoginWorkflow(Driver);
             //BirthSearch = new BirthSearchPage(Driver);
             //DeathSearch = new DeathSearchPage(Driver);
@@ -51,6 +53,53 @@ namespace UI_Tests.Smoke
             MyAccount.Login("autocustomer", "65O@ZTr8sVFW5L^4#pw&ayag");
 
             Assert.That(MyAccount.UserContentDisplays);
+        }
+        [Test]
+        [Category("Smoke")]
+        public void LogoutTest()
+        {
+            //SetData(1);
+            //LoginWorkflow.InitialLogin(Data);
+            Home.GoTo(BaseUrl);
+            Assert.That(Home.PageDisplays);
+
+            Home.MyAccount();
+
+            Assert.That(MyAccount.PageDisplays);
+
+            MyAccount.Login("autocustomer", "65O@ZTr8sVFW5L^4#pw&ayag");
+
+            Assert.That(MyAccount.UserContentDisplays);
+
+            MyAccount.Logout();
+        }
+        [Test]
+        [Category("Smoke")]
+        public void EmptyCartMessage()
+        {
+            //SetData(1);
+            Home.GoTo(BaseUrl);
+            Assert.That(Home.PageDisplays);
+
+            Home.Cart();
+
+            Assert.That(Cart.PageDisplays);
+
+            Assert.That(Driver.PageSource, Does.Contain("Your cart is currently empty."));
+        }
+        [Test]
+        [Category("Smoke")]
+        public void UnavailableCheckoutMessage()
+        {
+            //SetData(1);
+            Home.GoTo(BaseUrl);
+            Assert.That(Home.PageDisplays);
+
+            Home.Cart();
+
+            Assert.That(Cart.PageDisplays);
+
+            Assert.That(Driver.PageSource, Does.Contain("Your cart is currently empty."));
         }
         private void SetData(int row)
         {
