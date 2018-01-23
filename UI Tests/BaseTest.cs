@@ -6,9 +6,16 @@ using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Opera;
+using OpenQA.Selenium.PhantomJS;
 using OpenQA.Selenium.Remote;
 using UI_Tests.Properties;
 using Framework;
+using WebDriverManager;
+using WebDriverManager.DriverConfigs.Impl;
+using OpenQA.Selenium.Edge;
+using WebDriverManager.Helpers;
 
 namespace UI_Tests
 {
@@ -18,7 +25,7 @@ namespace UI_Tests
     {
         protected Library Lib;
         protected IWebDriver Driver;
-        public string[] Table;
+        public string Table;
         private string TestClass;
         private string DataSheet;
         private string PDFDirectory;
@@ -33,6 +40,7 @@ namespace UI_Tests
         private string ScreenshotDirectory;
         protected internal static string Environment;
         protected internal static string BaseUrl;
+        protected static string Version;
 
         [OneTimeSetUp]
         protected void OneTimeSetUp()
@@ -45,7 +53,7 @@ namespace UI_Tests
         {
             TestClass = TestContext.CurrentContext.Test.ClassName;
 
-            //CreateLibrary(TestClass);
+            CreateLibrary(TestClass);
 
             switch (Host.ToLower())
             {
@@ -53,14 +61,33 @@ namespace UI_Tests
                     switch (BrowserName.ToLower())
                     {
                         case "firefox":
-                            var service = FirefoxDriverService.CreateDefaultService(VendorDirectory);
-                            Driver = new FirefoxDriver(service);
+                            new DriverManager().SetUpDriver(new FirefoxConfig());
+                            Driver = new FirefoxDriver();
                             break;
                         case "chrome":
+                            new DriverManager().SetUpDriver(new ChromeConfig(), Version, Architecture.X64);
                             ChromeOptions options = new ChromeOptions();
                             options.AddUserProfilePreference("download.default_directory", PDFDirectory);
                             options.AddUserProfilePreference("download.prompt_for_download", false);
-                            Driver = new ChromeDriver(VendorDirectory, options);
+                            //options.AddArguments("headless", "disable-gpu");
+                            //options.AddArguments("headless", "disable-gpu", "remote-debugging-port=9222", "window-size=1440,900", "disable-infobars", "--disable-extensions");
+                            Driver = new ChromeDriver(options);
+                            break;
+                        case "internet explorer":
+                            new DriverManager().SetUpDriver(new InternetExplorerConfig());
+                            Driver = new InternetExplorerDriver();
+                            break;
+                        case "edge":
+                            new DriverManager().SetUpDriver(new EdgeConfig());
+                            Driver = new EdgeDriver();
+                            break;
+                        case "opera":
+                            new DriverManager().SetUpDriver(new OperaConfig());
+                            Driver = new OperaDriver();
+                            break;
+                        case "phantomjs":
+                            new DriverManager().SetUpDriver(new PhantomConfig());
+                            Driver = new PhantomJSDriver();
                             break;
                     }
                     break;
@@ -87,13 +114,14 @@ namespace UI_Tests
             BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             BrowserName = Settings.Default.BrowserName;
             BaseUrl = Settings.Default.BaseUrl;
-            VendorDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).
-                                      Parent?.Parent?.FullName + @"\Vendor";
+            //VendorDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).
+            //                          Parent?.Parent?.FullName + @"\Vendor";
             ScreenshotDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).
                                       Parent?.Parent?.FullName + @"\Screenshots\";
             DownloadDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).
                                       Parent?.Parent?.FullName + @"\Downloads\";
-
+            Version = Settings.Default.Version;
+            Table = Settings.Default.Table;
             //Set Current Directory for easier file references
             Directory.SetCurrentDirectory(BaseDirectory);
         }
@@ -102,17 +130,17 @@ namespace UI_Tests
         {
             Lib = new Library();
 
-            Table = new Library().GetTable(testClass);
+            //Table = new Library().GetTable(testClass);
 
-            DataSheet = "../../Data/" + Table[0] + "_" + Environment + ".xlsx";
+            DataSheet = "../../Data/Data.xlsx";
 
-            PDFDirectory = DownloadDirectory + Table[0] + "\\" + Table[1] + "\\";
+            //PDFDirectory = DownloadDirectory + Table[0] + "\\" + Table[1] + "\\";
 
             //Open/Save Excel file to update date formulas
-            Lib.OpenAndSave(DataSheet);
+            //Lib.OpenAndSave(DataSheet);
 
             //Add data to the datatable
-            Lib.PopulateInCollection(DataSheet, Table[1]);
+            Lib.PopulateInCollection(DataSheet, Table);
         }
 
         protected void Rename(string oldName, string newName)

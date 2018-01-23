@@ -25,7 +25,38 @@ namespace Framework
             //excelReader.IsFirstRowAsColumnNames = true;
 
             //Return as DataSet
-            using (DataSet result = excelReader.AsDataSet())
+            using (DataSet result = excelReader.AsDataSet(new ExcelDataSetConfiguration()
+            {
+
+                // Gets or sets a value indicating whether to set the DataColumn.DataType 
+                // property in a second pass.
+                UseColumnDataType = true,
+
+                // Gets or sets a callback to obtain configuration options for a DataTable. 
+                ConfigureDataTable = (tableReader) => new ExcelDataTableConfiguration()
+                {
+
+                    // Gets or sets a value indicating the prefix of generated column names.
+                    EmptyColumnNamePrefix = "Column",
+
+                    // Gets or sets a value indicating whether to use a row from the 
+                    // data as column names.
+                    UseHeaderRow = true,
+
+                    // Gets or sets a callback to determine which row is the header row. 
+                    // Only called when UseHeaderRow = true.
+                    ReadHeaderRow = (rowReader) => {
+                        // F.ex skip the first row and use the 2nd row as column headers:
+                        rowReader.Read();
+                    },
+
+                    // Gets or sets a callback to determine whether to include the 
+                    // current row in the DataTable.
+                    FilterRow = (rowReader) => {
+                        return true;
+                    },
+                }
+            }))
             {
                 //Get all the Tables
                 DataTableCollection table = result.Tables;
@@ -107,29 +138,29 @@ namespace Framework
             }
         }
 
-        public string[] GetTable(string testClass)
-        {
-            string[] tableQuery = new string[2];
+        //public string[] GetTable(string testClass)
+        //{
+        //    string[] tableQuery = new string[2];
 
-            var table = XDocument.Load("../../../Tables.xml").Descendants("Table");
+        //    var table = XDocument.Load("../../../Tables.xml").Descendants("Table");
 
-            Debug.WriteLine("TestClass: " + testClass);
-            Debug.WriteLine("Table: " + table);
+        //    Debug.WriteLine("TestClass: " + testClass);
+        //    Debug.WriteLine("Table: " + table);
 
-            var xElements = table as IList<XElement> ?? table.ToList();
-            var stateQuery = xElements
-                .Where(t => (t.Element("TestClass")?.Value) == testClass)
-                .Select(t => t.Element("State")?.Value).Single();
+        //    var xElements = table as IList<XElement> ?? table.ToList();
+        //    var stateQuery = xElements
+        //        .Where(t => (t.Element("TestClass")?.Value) == testClass)
+        //        .Select(t => t.Element("State")?.Value).Single();
 
-            var sheetQuery = xElements
-                .Where(t => (t.Element("TestClass")?.Value) == testClass)
-                .Select(t => t.Element("Sheet")?.Value).Single();
+        //    var sheetQuery = xElements
+        //        .Where(t => (t.Element("TestClass")?.Value) == testClass)
+        //        .Select(t => t.Element("Sheet")?.Value).Single();
 
-            tableQuery[0] = stateQuery;
-            tableQuery[1] = sheetQuery;
+        //    tableQuery[0] = stateQuery;
+        //    tableQuery[1] = sheetQuery;
 
-            return tableQuery;
-        }
+        //    return tableQuery;
+        //}
     }
 
     public class Datacollection

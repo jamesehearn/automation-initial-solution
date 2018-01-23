@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using UI_Tests.Data;
 
 namespace Framework.Pages
 {
@@ -19,10 +20,10 @@ namespace Framework.Pages
         public MyAccountPage(IWebDriver driver) : base(driver) { }
         public bool PageDisplays() => IsDisplayed(PageTitle, 10);
         public bool UserContentDisplays() => IsDisplayed(LoggInContent, 10);
-        public MyAccountPage Login(string username, string password)
+        public MyAccountPage Login(DataObject d)
         {
-            Type(UsernameText, username);
-            Type(PasswordText, password);
+            Type(UsernameText, d.Username);
+            Type(PasswordText, d.Password);
             Click(LoginButton);
             return this;
         }

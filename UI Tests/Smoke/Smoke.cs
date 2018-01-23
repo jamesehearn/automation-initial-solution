@@ -40,8 +40,7 @@ namespace UI_Tests.Smoke
         [Category("Smoke")]
         public void LoginTest()
         {
-            //SetData(1);
-            //LoginWorkflow.InitialLogin(Data);
+            SetData(1);
             Home.GoTo(BaseUrl);
             Assert.That(Home.PageDisplays);
             Assert.That(Driver.Title, Is.EqualTo("Automation – Site for Automation and Testing Demonstrations"));
@@ -50,7 +49,7 @@ namespace UI_Tests.Smoke
 
             Assert.That(MyAccount.PageDisplays);
 
-            MyAccount.Login("autocustomer", "65O@ZTr8sVFW5L^4#pw&ayag");
+            MyAccount.Login(Data);
 
             Assert.That(MyAccount.UserContentDisplays);
         }
@@ -58,7 +57,7 @@ namespace UI_Tests.Smoke
         [Category("Smoke")]
         public void LogoutTest()
         {
-            //SetData(1);
+            SetData(1);
             //LoginWorkflow.InitialLogin(Data);
             Home.GoTo(BaseUrl);
             Assert.That(Home.PageDisplays);
@@ -67,7 +66,7 @@ namespace UI_Tests.Smoke
 
             Assert.That(MyAccount.PageDisplays);
 
-            MyAccount.Login("autocustomer", "65O@ZTr8sVFW5L^4#pw&ayag");
+            MyAccount.Login(Data);
 
             Assert.That(MyAccount.UserContentDisplays);
 
@@ -103,7 +102,8 @@ namespace UI_Tests.Smoke
         }
         private void SetData(int row)
         {
-            //Data.Target = Lib.Data(row, "target");
+            Data.Username = Lib.Data(row, "username");
+            Data.Password = Lib.Data(row, "password");
         }
     }
 }

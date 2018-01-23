@@ -11,5 +11,11 @@
     <Setting Name="BaseUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://automation.jameshearn.com/</Value>
     </Setting>
+    <Setting Name="Version" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Latest</Value>
+    </Setting>
+    <Setting Name="Table" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Testing</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
