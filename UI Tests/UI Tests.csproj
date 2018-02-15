@@ -101,7 +101,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Screenshots\" />
-    <Folder Include="Vendor\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
